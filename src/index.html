@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Çatdırılma Kalkulyatoru</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="calculator-container">
+    <h1>Çatdırılma Xərci Hesablayıcısı</h1>
+
+    <label for="city-select">1. Çatdırılma Bölgəsi:</label>
+    <select id="city-select" name="delivery_area">
+        <option value="" disabled selected>Zəhmət olmasa, bir bölgə seçin</option>
+        <option value="bakı">Bakı</option>
+        <option value="xırdalan">Xırdalan</option>
+        <option value="sumqayıt">Sumqayıt</option>
+    </select>
+
+    <label for="price">2. Məhsulun Qiyməti (AZN):</label>
+    <input type="number" id="price" min="0" value="0">
+
+    <button onclick="calculateDelivery()">Hesabla</button>
+
+    <div id="result-area">
+        <h3>Yekun Hesabat</h3>
+        <p id="status-message"></p>
+        <p>Çatdırılma Xərci: <span id="delivery-cost">0.00 AZN</span></p>
+        <p class="total">Yekun Ödəniş: <span id="total-cost">0.00 AZN</span></p>
+    </div>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
