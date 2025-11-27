@@ -3,7 +3,7 @@ import java.util.Scanner;
 public class CoffeShop {
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
-        System.out.println("CodaPolis CoffeShop Sizi Salamlayır!");
+        System.out.println("CodaPolis CoffeeShop Sizi Salamlayır!");
         System.out.println("Xidmətlərimizdən yararlana bilmək üçün zəhmət olmazsa");
         System.out.print("Yaşınızı qeyd edin: ");
         int age = sc.nextInt();
