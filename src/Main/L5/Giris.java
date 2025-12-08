@@ -7,7 +7,6 @@ public class Giris {
 
     String setName(String Name) {
         this.Name = Name;
-        System.out.println("Hörmətli " + Name + " Xoş gəldiniz!");
         return Name;
     }
 
@@ -15,7 +14,4 @@ public class Giris {
         this.Password = Password;
     }
 
-    public String getName() {
-        return Name;
-    }
 }

@@ -9,6 +9,10 @@ public class EWallet {
         this.balance = 0;
     }
 
+    public double getBalance() {
+        return balance;
+    }
+
     void setDeposit(double amount) {
         if (amount > 0) {
             this.balance += amount;
