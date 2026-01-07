@@ -3,42 +3,43 @@ package Main.L7;
 import java.util.Scanner;
 
 public class Main {
-    public static void main( String[] args) {
-        Scanner input = new Scanner(System.in);
 
-        System.out.println("Canlı Valyuta Konvertoru.");
+        public static void main(String[] args) {
 
-        // Bunu Yalnız Bank işçisi dəyişə bilər!
-        CurrencyConverter.setCommissionRate(0.01);
-        System.out.println("Hazırda Bankımızda Valyuta mübadiləsi üçün komissiya " + (CurrencyConverter.getCommissionRate() * 100) + "% təşkil edir.");
+            Scanner sc = new Scanner(System.in);
+            System.out.print("Adınızı və Soyadınızı qeyd edin: ");
+            String name = sc.nextLine();
 
-        System.out.println("Zəhmət olmasa dəyişəcəyiniz valyutanı seçin: \n1. USD to AZN \n2. EVRO to AZN.");
-        int choose = input.nextInt();
+            user istifadeci = new user(name);
 
-        Currency currencyConverter;
+            NotificationService emailService = new eMailService();
+            NotificationService smsService = new smsService();
 
-        switch (choose) {
-        case 1:
-            currencyConverter = new Usd();
-            System.out.println("USD to AZN");
-            break;
+            String commonMessage = "Sifarişiniz təsdiqlənmişdir. Təşəkkürlər!";
 
-            case  2:
-            currencyConverter = new Evro();
-            System.out.println("EVRO to AZN");
-            break;
 
-            default:
-                System.out.println("Düzgün Seçim edilməyib, Yenidən seçim edin!");
-                return;
+            System.out.println("Göndəriş metodunu seçin: ");
+            System.out.println("1. eMail      2. SMS");
+            String choose = sc.nextLine().toLowerCase();
+
+            switch (choose) {
+                case "1":
+                    case "email":
+                System.out.println("eMail ilə göndəriş.");
+                        istifadeci.sendNotification(emailService, commonMessage);
+                break;
+
+                case "2":
+                    case "sms":
+                System.out.println("\nSMS ilə göndəriş.");
+                        istifadeci.sendNotification(smsService, commonMessage);
+                break;
+
+                default:
+                    System.out.println("Düzgün Seçim edim!");
+                    break;
+            }
+                  sc.close();
         }
-
-        System.out.print("Dəyişəcəyiniz məbləği daxil edin: ");
-        double total = input.nextDouble();
-
-        currencyConverter.convertToAzn(total);
-
-input.close();
-
     }
-}
+

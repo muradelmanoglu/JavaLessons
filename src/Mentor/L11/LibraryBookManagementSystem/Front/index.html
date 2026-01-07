@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Polis - Kitabxana Sistemi</title>
+    <style>
+        :root {
+            --wood: #5d4037;
+            --shelf: #d7ccc8;
+            --gold: #ffc107;
+            --bg: #f4f4f9;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg);
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            background-color: var(--wood);
+            color: white;
+            width: 100%;
+            text-align: center;
+            padding: 1rem 0;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .container {
+            display: flex;
+            gap: 30px;
+            padding: 30px;
+            max-width: 1200px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        /* Form dizaynı */
+        .controls {
+            background: white;
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            width: 300px;
+        }
+
+        input, button {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border-radius: 6px;
+            border: 1px solid #ddd;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #2e7d32;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button:hover { background-color: #1b5e20; }
+        .btn-delete { background-color: #c62828; }
+        .btn-delete:hover { background-color: #8e0000; }
+
+        /* Kitabxana Rəfi (Grid) */
+        .library-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 180px);
+            grid-template-rows: repeat(3, 150px);
+            gap: 15px;
+            background: var(--wood);
+            padding: 15px;
+            border-radius: 8px;
+            border: 10px solid #3e2723;
+        }
+
+        .shelf-slot {
+            background-color: var(--shelf);
+            border: 2px dashed #a1887f;
+            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            position: relative;
+            transition: 0.3s;
+            overflow: hidden;
+            text-align: center;
+            padding: 5px;
+        }
+
+        .shelf-slot.occupied {
+            background: #fff;
+            border: 1px solid #ddd;
+            box-shadow: inset 0 -10px 0 var(--gold);
+        }
+
+        .book-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+
+        .book-info b { color: #2e7d32; }
+
+        .search-area {
+            width: 100%;
+            max-width: 500px;
+            margin-bottom: 20px;
+        }
+
+        .log-panel {
+            margin-top: 20px;
+            background: #222;
+            color: #0f0;
+            padding: 10px;
+            border-radius: 5px;
+            width: 100%;
+            height: 100px;
+            overflow-y: auto;
+            font-family: monospace;
+            font-size: 0.9rem;
+        }
+
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>📚 Code Polis Kitabxana Sistemi</h1>
+</header>
+
+<div class="search-area">
+    <input type="text" id="searchName" placeholder="Kitab adı ilə axtarış..." onkeyup="searchBook()">
+</div>
+
+<div class="container">
+    <div class="controls">
+        <h3>Yeni Kitab / Yenilə</h3>
+        <input type="number" id="row" placeholder="Sıra (0-2)" min="0" max="2">
+        <input type="number" id="col" placeholder="Sütun (0-2)" min="0" max="2">
+        <input type="text" id="name" placeholder="Kitabın Adı">
+        <input type="text" id="author" placeholder="Müəllif">
+        <input type="number" id="year" placeholder="İl">
+        <input type="number" id="price" placeholder="Qiymət (AZN)">
+        <button onclick="addOrUpdateBook()">Yadda saxla</button>
+        <button class="btn-delete" onclick="deleteBookUI()">Sil</button>
+
+        <div class="log-panel" id="logs">Sistem hazır.</div>
+    </div>
+
+    <div class="library-grid" id="libraryGrid">
+    </div>
+</div>
+
+
+
+<script>
+    // Java-dakı Books və Library məntiqi
+    let rows = 3;
+    let cols = 3;
+    let shelves = Array(rows).fill(null).map(() => Array(cols).fill(null));
+
+    function log(message) {
+        const logPanel = document.getElementById('logs');
+        logPanel.innerHTML += `> ${message}<br>`;
+        logPanel.scrollTop = logPanel.scrollHeight;
+    }
+
+    // Grid-i yaratmaq
+    function initGrid() {
+        const gridElement = document.getElementById('libraryGrid');
+        gridElement.innerHTML = '';
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                const slot = document.createElement('div');
+                slot.className = 'shelf-slot';
+                slot.id = `slot-${i}-${j}`;
+                slot.innerHTML = `[${i}][${j}]<br>BOŞ`;
+                slot.onclick = () => fillInputs(i, j);
+                gridElement.appendChild(slot);
+            }
+        }
+    }
+
+    function fillInputs(r, c) {
+        document.getElementById('row').value = r;
+        document.getElementById('col').value = c;
+        const book = shelves[r][c];
+        if(book) {
+            document.getElementById('name').value = book.name;
+            document.getElementById('author').value = book.author;
+            document.getElementById('year').value = book.year;
+            document.getElementById('price').value = book.price;
+        }
+    }
+
+    function addOrUpdateBook() {
+        const r = parseInt(document.getElementById('row').value);
+        const c = parseInt(document.getElementById('col').value);
+        const name = document.getElementById('name').value;
+        const author = document.getElementById('author').value;
+        const year = document.getElementById('year').value;
+        const price = document.getElementById('price').value;
+
+        if (isNaN(r) || isNaN(c) || r >= rows || c >= cols) {
+            log("Xəta: Düzgün koordinat seçin!");
+            return;
+        }
+
+        // Java-dakı addBooks və updateBook məntiqi birləşdirildi
+        const book = { name, author, year, price };
+        shelves[r][c] = book;
+
+        updateUI();
+        log(`Kitab [${r}][${c}] rəfinə əlavə edildi/yeniləndi.`);
+    }
+
+    function deleteBookUI() {
+        const r = parseInt(document.getElementById('row').value);
+        const c = parseInt(document.getElementById('col').value);
+
+        if (shelves[r] && shelves[r][c]) {
+            shelves[r][c] = null;
+            updateUI();
+            log(`[${r}][${c}] rəfindəki kitab silindi.`);
+        } else {
+            log("Xəta: Bu yer onsuz da boşdur!");
+        }
+    }
+
+    function updateUI() {
+        for (let i = 0; i < rows; i++) {
+            for (let j = 0; j < cols; j++) {
+                const slot = document.getElementById(`slot-${i}-${j}`);
+                const book = shelves[i][j];
+                if (book) {
+                    slot.className = 'shelf-slot occupied';
+                    slot.innerHTML = `
+                        <div class="book-icon">📘</div>
+                        <div class="book-info">
+                            <b>${book.name}</b><br>
+                            ${book.author}<br>
+                            <span>${book.price} AZN</span>
+                        </div>
+                    `;
+                } else {
+                    slot.className = 'shelf-slot';
+                    slot.innerHTML = `[${i}][${j}]<br>BOŞ`;
+                }
+            }
+        }
+    }
+
+    function searchBook() {
+        const query = document.getElementById('searchName').value.toLowerCase();
+        const slots = document.querySelectorAll('.shelf-slot');
+
+        slots.forEach(slot => {
+            if (query && slot.innerText.toLowerCase().includes(query) && slot.classList.contains('occupied')) {
+                slot.style.border = "3px solid red";
+                slot.style.transform = "scale(1.05)";
+            } else {
+                slot.style.border = "";
+                slot.style.transform = "";
+            }
+        });
+    }
+
+    initGrid();
+</script>
+
+</body>
+</html>

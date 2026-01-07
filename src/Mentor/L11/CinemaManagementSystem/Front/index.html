@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Code Polis Cinema System</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div id="login-box" class="glass-panel">
+    <h2 class="brand-color">ADMIN LOGIN</h2>
+    <p>Cyber Cinema Management</p>
+    <div class="input-group">
+        <input type="text" id="username" placeholder="Kassir Adı (Kassir1)">
+        <input type="password" id="password" placeholder="Şifrə (12345)">
+    </div>
+    <button onclick="handleLogin()">SİSTEMƏ DAXİL OL</button>
+    <p id="error-msg" class="error"></p>
+</div>
+
+<div id="main-app" class="glass-panel main-container hidden">
+    <header>
+        <h3>Xoş gəldiniz, <span id="user-display" class="brand-color"></span></h3>
+        <button class="btn-sm btn-outline" onclick="logout()">Çıxış</button>
+    </header>
+
+    <nav class="menu-tabs">
+        <button onclick="showSection('view-hall')">🎬 Zala Bax</button>
+        <button onclick="showSection('add-bron')">➕ Yeni Bron</button>
+        <button onclick="showSection('search-section')">🔍 Axtarış</button>
+    </nav>
+
+    <main class="content-area">
+        <div id="view-hall" class="section">
+            <h4>Oturacaqların Vəziyyəti</h4>
+            <div class="hall-grid" id="hall-grid-container"></div>
+        </div>
+
+        <div id="add-bron" class="section hidden">
+            <h4>Müştəri Qeydiyyatı</h4>
+            <div class="form-group">
+                <input type="number" id="row-in" placeholder="Sıra (0-2)" min="0" max="2">
+                <input type="number" id="col-in" placeholder="Yer (0-2)" min="0" max="2">
+                <input type="text" id="name-in" placeholder="Müştərinin Tam Adı">
+                <button class="btn-success" onclick="addBooking()">Bronu Tamamla</button>
+            </div>
+        </div>
+
+        <div id="search-section" class="section hidden">
+            <h4>Ada görə filtr</h4>
+            <div class="search-box">
+                <input type="text" id="search-name" placeholder="Axtarılacaq ad...">
+                <button onclick="searchName()">Tap</button>
+            </div>
+            <div id="search-result" class="result-display"></div>
+        </div>
+    </main>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>

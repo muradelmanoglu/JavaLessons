@@ -1,0 +1,91 @@
+/* Arxa fon və ümumi ayarlar */
+body {
+    margin: 0;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.9)),
+    url('https://images.unsplash.com/photo-1489599849927-2ee91cede3ba?auto=format&fit=crop&w=1920&q=80');
+    background-size: cover;
+    color: #fff;
+}
+
+/* Glassmorphism Paneli */
+.glass-panel {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    padding: 2.5rem;
+    border-radius: 24px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    width: 380px;
+    text-align: center;
+}
+
+.main-container { width: 700px; }
+.hidden { display: none !important; }
+
+/* Rənglər və Yazılar */
+.brand-color { color: #e50914; text-transform: uppercase; letter-spacing: 2px; }
+.error { color: #ff4d4d; font-size: 0.8rem; margin-top: 10px; }
+
+/* Inputlar və Düymələr */
+input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    color: white;
+    box-sizing: border-box;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    margin-top: 15px;
+    background: #e50914;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+button:hover { background: #b20710; transform: translateY(-2px); }
+
+/* Menu və Bölmələr */
+.menu-tabs { display: flex; gap: 10px; margin-top: 20px; }
+.menu-tabs button { background: rgba(255,255,255,0.15); font-size: 0.9rem; }
+
+/* Zalın Grid Sistemi */
+.hall-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.seat {
+    padding: 15px;
+    background: #27ae60;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: 0.2s;
+    border: 2px solid transparent;
+}
+
+.seat.occupied { background: #c0392b; cursor: help; }
+.seat:hover { border-color: #fff; }
+
+.result-display {
+    margin-top: 20px;
+    padding: 15px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 8px;
+}
