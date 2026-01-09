@@ -1,0 +1,4 @@
+[PAYMENT_SUCCESS] Order#123
+[PAYMENT_FAILED] Card declined
+[PAYMENT_SUCCESS] Order#124
+[PAYMENT_FAILED] Insufficient funds

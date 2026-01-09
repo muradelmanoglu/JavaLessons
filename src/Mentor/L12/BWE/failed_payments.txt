@@ -1,0 +1,2 @@
+[PAYMENT_FAILED] Card declined
+[PAYMENT_FAILED] Insufficient funds

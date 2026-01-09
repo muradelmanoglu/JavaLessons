@@ -1,0 +1,3 @@
+[SALE_COMPLETED]Product:Laptop
+[SALE_COMPLETED]Product:Tablet
+[SALE_COMPLETED]Product:Monitor
