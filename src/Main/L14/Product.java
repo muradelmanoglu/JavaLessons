@@ -5,7 +5,7 @@ public abstract class Product {
     private String brand;
     private Double price;
     private Integer stock;
-    private Integer countStock;
+    // private Integer countStock;
 
     public Product(Double price, String brand, Integer stock) {
         this.price = price;
